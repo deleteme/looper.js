@@ -1,6 +1,6 @@
 /*
 bookmarklet
-javascript:(function(){var%20script=document.createElement('script');script.type='text/javascript';script.src='https://raw.github.com/deleteme/looper.js/master/looper.js'+(new%20Date().getTime());document.getElementsByTagName('body')[0].appendChild(script);})()
+javascript:(function(){var%20script=document.createElement('script');script.type='text/javascript';script.src='https://raw.github.com/deleteme/looper.js/master/looper.js?'+(new%20Date().getTime());document.getElementsByTagName('body')[0].appendChild(script);})()
 
 usage:
 
