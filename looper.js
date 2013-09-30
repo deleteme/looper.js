@@ -15,89 +15,44 @@ usage:
 
 */
 
-var Looper = function(options){
-    // the index of the next callback
-    this.stepCount = 0;
-    // the current loop count
-    this.count = 0;
-    // the number of times to loop
-    this.times = options && 'times' in options ? options.times : 25;
-    // how long in ms it takes to loop
-    this.interval = options && 'interval' in options ? options.interval : 800;
-    this.periodic = undefined;
-    this.callbacks = options && 'callbacks' in options ? options.callbacks : [];
-    return this;
-};
+/*
+var cycle = [
+  function(){}
+  ,function(){}
+  ,function(){}
+  ,function(){}
+  ,function(){}
+];
 
-Looper.prototype = {
-    add: function(f){
-        this.callbacks.push.apply(this.callbacks, arguments);
-        return this;
-    },
-    remove: function(f){
-        var reduced = [];
-        for (var i = 0, argumentsLength = arguments.length; i < argumentsLength; i++){
-            while (this.has(arguments[i]))
-                this.callbacks = Looper._remove(this.callbacks, arguments[i]);
-        }
-        this.callbacks = reduced;
-        return this;
-    },
-    has: function(f){
-        var match = false;
-        for (var i = 0, l = this.callbacks.length; i < l; i++){
-            match = this.callbacks[i] === f;
-            if (match) break;
-        }
-        return match;
-    },
-    start: function(){
-        var _this = this;
-        if (this.periodic) this.stop();
-        this.count = 0;
-        if (this.callbacks.length){
-            this.callbacks[this.stepCount](this.count);
-            this.stepCount += 1;
-            this.periodic = setInterval(function(){
-                if (_this.count < _this.times){
-                    if (_this.callbacks[_this.stepCount]){
-                        _this.callbacks[_this.stepCount](_this.count);
-                        _this.stepCount += 1;
-                    }
-                    if (_this.stepCount >= _this.callbacks.length){
-                        _this.stepCount = 0;
-                        _this.count += 1;
-                    }
-                } else {
-                    _this.stop().done();
-                }
+var sequence = Looper(cycle);
 
-            }, this.interval / this.callbacks.length);
-        }
-        return this;
-    },
-    stop: function(){
-        clearInterval(this.periodic);
-        this.periodic = undefined;
-        return this;
-    },
-    done: function(f){
-        if (f) this._doneCallback = f;
-        else if (this._doneCallback) this._doneCallback();
-        return this;
-    },
-    empty: function(){
-        this.callbacks = [];
-        return this;
+//  sequence.times + ' cycles', sequence._duration + 'ms';
+
+sequence.runs = 153;
+sequence.duration = 15300;
+
+sequence();
+*/
+
+
+
+
+var looper = function(sequence, options){
+    var runs = options && options.runs ? options.runs : 25;
+    var duration = options && options.duration ? options.duration : 15000;
+    var _looper = function (){
+        var runDuration = duration / runs;
+        console.profile('Looper');
+
+        
+        console.profileEnd('Looper');
+        return sequence.reduce(Q.when, Q());
     }
+    function render(progress){
+      loop.progress = progress;
+    }
+    render(0);
+    return _looper;
 };
 
-Looper._remove = function(array, value){
-    var reduced = [];
-    for (var i = 0, l = array.length; i < l; i++){
-        if (array[i] !== value){
-            reduced.push(array[i]);
-        }
-    }
-    return reduced;
-};
+
