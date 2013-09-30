@@ -1,43 +1,55 @@
 describe('looper', function(){
-    var loop;
+    var loop, cycle;
+    var sandbox = sinon.sandbox.create();
 
     beforeEach(function(){
-      var cycle = [
-        sinon.stub()
-        , sinon.stub()
-        , sinon.stub()
-        , sinon.stub()
-        , sinon.stub()
+      cycle = [
+          sandbox.spy(function(){
+              //console.log(1);
+          })
+          , sandbox.spy(function(){
+              //console.log(2);
+          })
+          , sandbox.spy(function(){
+              //console.log(3);
+              return 3;
+          })
       ];
       loop = looper(cycle);
     });
 
-    it('should return a function', function(){
-        expect(loop).to.be.a(Function);
+
+    it('accepts a value, passed to the functions.', function(done){
+        var addOne = sandbox.spy(function(n){ return n + 1; });
+        var addTwo = sandbox.spy(function(n){ return n + 2; });
+        loop = looper([addOne, addTwo]);
+        loop.runs = 1;
+        loop(0).then(function(n){
+            sinon.assert.calledWith(addOne, 0);
+            sinon.assert.calledWith(addTwo, 1);
+            done();
+        }).done();
     });
 
-    it('should start with a progress of zero', function(){
-        expect(loop.progress).to.be(0);
+    it('is a promise of the final value.', function(done){
+        var addOne = function(n){ return n + 1; };
+        loop = looper([addOne, addOne]);
+        loop.runs = 40;
+        loop(0).then(function(n){
+            expect(n).to.be(80);
+            done();
+        }).done();
     });
 
-    describe('returned function:', function(){
-
-        it('should call each function "runs" times.', function(done){
-            var runs = 3;
-            loop.runs = runs;
-            loop.duration = 1000;
-            loop().then(function(){
-                sinon.assert.callCount(cycle[0], runs);
-                sinon.assert.callCount(cycle[1], runs);
-                sinon.assert.callCount(cycle[2], runs);
-                sinon.assert.callCount(cycle[3], runs);
-                sinon.assert.callCount(cycle[4], runs);
-                done();
-            });
-        });
-
-        it('should finish after "duration".');
-        
+    it('should call each function "runs" times.', function(done){
+        loop.runs = 113;
+        loop().then(function(n){
+            expect(n).to.be(3);
+            sinon.assert.callCount(cycle[0], loop.runs);
+            sinon.assert.callCount(cycle[1], loop.runs);
+            sinon.assert.callCount(cycle[2], loop.runs);
+            done();
+        }).done();
     });
 
 });
