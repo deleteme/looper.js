@@ -1,58 +1,40 @@
 /*
-bookmarklet
-javascript:(function(){var%20script=document.createElement('script');script.type='text/javascript';script.src='https://raw.github.com/deleteme/looper.js/master/looper.js?'+(new%20Date().getTime());document.getElementsByTagName('body')[0].appendChild(script);})()
-
-usage:
-
-    var looper = new Looper({
-        times: 100, interval: 1000
-    });
-
-    looper
-        .add(function(){ $("#logo").click(); },
-            function(){ $("#page").click(); })
-        .start();
-
+Usage:
+    var sequence = [function(){}, function(){}, function(){}];
+    var loop = looper(sequence, 153);
+    loop();
 */
+var looper = function(sequence, runs){
 
-/*
-var cycle = [
-  function(){}
-  ,function(){}
-  ,function(){}
-  ,function(){}
-  ,function(){}
-];
+    var loop = function(value){
+        var start = Date.now();
+        var all   = [];
+        var sl    = loop.sequence.length;
+        var l     = loop.runs * sl;
+        var i     = 0;
+        var log = function(value){
+            var end = Date.now();
+            var duration = end - start;
+            var runsPerSecond = (loop.runs / duration) * 1000;
+            console.log('looper finished ' + loop.runs +
+                ' runs in ' + duration + ' ms. ' +
+                'Average ' + (runsPerSecond).toFixed(1) +
+                ' runs per second.');
+            return value;
+        };
 
-var sequence = Looper(cycle);
+        while (i < l) {
+            all[i] = loop.sequence[i % sl];
+            i++;
+        }
 
-//  sequence.times + ' cycles', sequence._duration + 'ms';
+        return all.reduce(Q.when, Q(value)).then(log, log);
 
-sequence.runs = 153;
-sequence.duration = 15300;
+    };
 
-sequence();
-*/
+    loop.sequence = sequence;
+    loop.runs = runs || 25;
 
+    return loop;
 
-
-
-var looper = function(sequence, options){
-    var runs = options && options.runs ? options.runs : 25;
-    var duration = options && options.duration ? options.duration : 15000;
-    var _looper = function (){
-        var runDuration = duration / runs;
-        console.profile('Looper');
-
-        
-        console.profileEnd('Looper');
-        return sequence.reduce(Q.when, Q());
-    }
-    function render(progress){
-      loop.progress = progress;
-    }
-    render(0);
-    return _looper;
 };
-
-
