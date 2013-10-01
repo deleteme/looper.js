@@ -10,6 +10,7 @@ var looper = function(sequence, runs){
   var promise      = resolver.promise;
   var groupMessage = 'Looping %s runs of %s functions';
   var logMessage   = '%s runs/s, %s functions/s';
+  var defaultRuns  = 27;
 
   var loop = function(value){
     console.group(groupMessage, loop.runs, loop.sequence.length);
@@ -47,7 +48,7 @@ var looper = function(sequence, runs){
   };
 
   loop.sequence = sequence;
-  loop.runs = runs || 25;
+  loop.runs = runs || defaultRuns;
 
   return loop;
 
