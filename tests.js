@@ -38,8 +38,8 @@ describe('looper', function(){
     }).done();
   });
 
-  it('defaults to 25 runs.', function(done){
-    var runs = 25;
+  it('defaults to 27 runs.', function(done){
+    var runs = 27;
     loop().then(function(){
       expect(loop.runs).to.be(runs);
       sinon.assert.callCount(cycle[0], runs);
