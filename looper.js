@@ -16,7 +16,6 @@ var looper = function(sequence, runs){
     console.group(groupMessage, loop.runs, loop.sequence.length);
     console.time('Duration');
     var start = Date.now();
-    var all   = [];
     var sl    = loop.sequence.length;
     var l     = loop.runs * sl;
     var i     = 0;
