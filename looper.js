@@ -23,8 +23,8 @@ var looper = function(sequence, runs){
     var log = function(value){
       var end                = Date.now();
       var duration           = end - start;
-      var runsPerSecond      = (loop.runs / duration) * 1000;
-      var functionsPerSecond = (l / duration) * 1000;
+      var runsPerSecond      = loop.runs / duration * 1000;
+      var functionsPerSecond = l / duration * 1000;
       console.log(logMessage, (runsPerSecond).toFixed(1), (functionsPerSecond).toFixed(1));
       console.timeEnd('Duration');
       console.groupEnd(groupMessage);
