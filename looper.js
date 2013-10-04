@@ -52,3 +52,15 @@ var looper = function(sequence, runs){
   return loop;
 
 };
+
+
+looper.click = function($el){
+  var resolver = Q.deferred();
+  var $el = $($el);
+  $el.on('click.looper', function(){
+    setTimeout(resolver.resolve, 50);
+    $el.off('click.looper');
+  });
+  $el.click();
+  return resolver.promise;
+};
