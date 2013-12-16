@@ -54,6 +54,8 @@ var looper = function(sequence, runs){
 };
 
 
+// Composes a function that will click an element.
+// It's useful when testing the action cleanliness of event handlers.
 looper.click = function($el){
   return function(){
     var resolver = Q.defer();

@@ -94,3 +94,27 @@ describe('looper', function(){
   });
 
 });
+
+describe("looper.click()", function(){
+  var sandbox;
+  beforeEach(function(){
+     sandbox = sinon.sandbox.create();
+  });
+  afterEach(function(){
+    sandbox.restore();
+  });
+  describe('returned composed function', function(){
+    it("returns a promise that resolves ~50ms after the element's clicked.", function(done){
+      var handler = sandbox.spy();
+      var click = looper.click('body');
+      var start = (new Date()).getTime();
+      $('body').on('click', handler);
+      click().then(function(){
+        var now = (new Date()).getTime();
+        expect(now - start).to.be.greaterThan(50);
+        sinon.assert.calledOnce(handler);
+        done();
+      });
+    });
+  });
+});
