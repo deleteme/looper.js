@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <title>looper demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <button id="show">Show</button>
+    <button id="hide">Hide</button>
+
+    <hr />
+    <button id="loop">Loop</button>
+    <input id="count" value="53" />
+    <label for="count">times</label>
+    <hr />
+
+    <p>
+    This page has an example of leaky code. 'Show' and 'Hide' buttons toggle
+    the visibility of a modal. The show handler makes a new element, but the
+    hide method never removes it. Looper can help identify leaks by exercising
+    actions that should be clean.
+    </p>
+    <ol>
+      <li>Open the "Profile" panel of the Webkit Developer Tools.</li>
+      <li>Select "Take Heap Snapshot" and click "Take Snapshot" to record a fresh snapshot.</li>
+      <li>Click the "Loop" button on the page and let it finish.</li>
+      <li>Select "Take Heap Snapshot" and click "Take Snapshot" to record a snapshot after the leak has been introduced.</li>
+    </ol>
+
+    <script src="node_modules/q/q.js"></script>
+    <script src="jquery.js"></script>
+    <script src="looper.js"></script>
+    <script>
+
+      // sample leaky app
+      $(function(){
+
+        function make(){
+          return $("<div class='modal' />").appendTo('body').html('modal');
+        }
+
+        function show(){
+          hide();
+          return make().show();
+        }
+
+        function hide(){
+          return $(".modal").hide();
+        }
+
+        $("#show").on('click', show);
+        $("#hide").on('click', hide);
+
+      });
+
+      // example looper setup
+      $(function(){
+        var setup = looper.click("#show");
+        var teardown = looper.click("#hide");
+        var runs = Number($("#count").val());
+        var loop = looper([setup, teardown], runs);
+        function done(){
+          $('label').after("<span style='color:red;'>Done</span>");
+        }
+        $("#loop").on('click', function(){
+          loop().then(done)
+        });
+      });
+    </script>
+  </body>
+</html>
