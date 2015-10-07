@@ -1,0 +1,28 @@
+{
+  "name": "looper.js",
+  "version": "1.0.0",
+  "description": "Helps find memory leaks",
+  "main": "looper.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "jquery": "^2.1.4",
+    "mocha": "^2.3.3",
+    "sinon": "^1.7.3",
+    "testem": "^0.9.7"
+  },
+  "scripts": {
+    "test": "testem ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deleteme/looper.js.git"
+  },
+  "author": "Matt Garrett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deleteme/looper.js/issues"
+  },
+  "homepage": "https://github.com/deleteme/looper.js#readme"
+}
