@@ -1,6 +1,6 @@
 describe('looper', function(){
   var loop, cycle;
-  var sandbox = sinon.sandbox.create();
+  var sandbox;
 
   // yanked from http://stackoverflow.com/questions/4959975/generate-random-value-between-two-numbers-in-javascript
   function randomFromInterval(from,to) {
@@ -8,6 +8,7 @@ describe('looper', function(){
   }
 
   beforeEach(function(){
+    sandbox = sinon.sandbox.create();
     cycle = [sandbox.stub(), sandbox.stub(), sandbox.stub()];
     loop = looper(cycle);
   });
@@ -25,7 +26,7 @@ describe('looper', function(){
       sinon.assert.calledWith(addOne, 11);
       sinon.assert.calledWith(addTwo, 12);
       done();
-    }).done();
+    });
   });
 
   it('is a promise of the final value.', function(done){
@@ -35,7 +36,7 @@ describe('looper', function(){
     loop(0).then(function(n){
       expect(n).to.be(80);
       done();
-    }).done();
+    });
   });
 
   it('defaults to 27 runs.', function(done){
@@ -46,7 +47,7 @@ describe('looper', function(){
       sinon.assert.callCount(cycle[1], runs);
       sinon.assert.callCount(cycle[2], runs);
       done();
-    }).done();
+    });
   });
 
   it("should respect changes to runs property after the function's been composed.", function(done){
@@ -56,7 +57,7 @@ describe('looper', function(){
       sinon.assert.callCount(cycle[1], 123);
       sinon.assert.callCount(cycle[2], 123);
       done();
-    }).done();
+    });
   });
 
   it('should console.log with a summary when finished.', function(done){
@@ -65,7 +66,7 @@ describe('looper', function(){
     loop().then(function(){
       sinon.assert.calledWithMatch(console.log, '%s runs/s, %s functions/s', fixedRegExp, fixedRegExp);
       done();
-    }).done();
+    });
   });
 
   // Using functions that finish in a random duration,
@@ -75,9 +76,16 @@ describe('looper', function(){
     var min = 0;
     var max = 500;
     var start = Date.now();
+
+    function delay(ms){
+      return new Promise(function(resolve){
+        setTimeout(resolve, ms);
+      });
+    }
+
     var random = function(value){
-      var delay = randomFromInterval(min, max);
-      return Q.delay(delay).then(function(){
+      var ms = randomFromInterval(min, max);
+      return delay(ms).then(function(){
         return value + 1;
       });
     };
@@ -90,7 +98,7 @@ describe('looper', function(){
       expect(value).to.be(15);// runs * sequence.length
       expect(difference).to.be.lessThan(7500);// max * runs * sequence.length
       done();
-    }).done();
+    });
   });
 
 });
@@ -98,7 +106,7 @@ describe('looper', function(){
 describe("looper.click()", function(){
   var sandbox;
   beforeEach(function(){
-     sandbox = sinon.sandbox.create();
+    sandbox = sinon.sandbox.create();
   });
   afterEach(function(){
     sandbox.restore();
@@ -107,10 +115,10 @@ describe("looper.click()", function(){
     it("returns a promise that resolves ~50ms after the element's clicked.", function(done){
       var handler = sandbox.spy();
       var click = looper.click('body');
-      var start = (new Date()).getTime();
+      var start = Date.now();
       $('body').on('click', handler);
       click().then(function(){
-        var now = (new Date()).getTime();
+        var now = Date.now();
         expect(now - start).to.be.greaterThan(50);
         sinon.assert.calledOnce(handler);
         done();
