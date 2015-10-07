@@ -2,11 +2,10 @@ When used with the webkit heap profiler and timeline, this tool is useful for co
 
 1. Use bookmarklet (see looper.js source) to load the script onto the target page.
 2. Create a heap profile under webkit tools 'Profile'.
-3. Create an instance of Looper `var looper = new Looper()` in the console.
-4. Register callbacks with the `add()` method. The callbacks should setup and teardown an action that should be clean.
-5. `Record` activity in the webkit timeline.
-6. `looper.start()`.
-7. Let Looper finish. A `done` callback is called.
-8. Stop recording in the webkit timeline.
-9. Create a second heap profile.
-10. Compare the two heaps and evaluate memory growth in the timeline.
+3. Using the browser's console, create a loop function, providing an array of functions to `looper`: `var loop = looper([setup, teardown])`
+4. `Record` activity in the webkit timeline.
+5. Calling this function returns a Promise of the completion, which defaults to 27 runs. Run the function: `loop()`.
+6. Let Looper finish.
+7. Stop recording in the webkit timeline.
+8. Create a second heap profile.
+9. Compare the two heaps and evaluate memory growth in the timeline.
