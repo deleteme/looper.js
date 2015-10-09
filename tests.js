@@ -126,3 +126,30 @@ describe("looper.click()", function(){
     });
   });
 });
+
+describe("looper.sequencer()", function(){
+    var sandbox;
+    beforeEach(function(){
+        sandbox = sinon.sandbox.create();
+    });
+    afterEach(function(){
+        sandbox.restore();
+    });
+    it("returns a promise that resolves after N iterations * `delay`", function(done){
+        var callback = sandbox.spy(),
+            start = Date.now(),
+            delay = 50,
+            sequence = [1,2,3],
+            N = sequence.length,
+            totalTime = delay * N,
+            seq = looper.sequencer(sequence, callback, delay);
+
+        seq.then(function(){
+            var now = Date.now();
+            expect(now-start).to.be.greaterThan(totalTime);
+            sinon.assert.callCount(callback, N);
+            done();
+        });
+    });
+
+});

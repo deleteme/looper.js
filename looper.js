@@ -74,3 +74,20 @@ looper.clickSelector = function(selector){
     });
   };
 };
+
+looper.sequencer = function(sequence, callback, delay) {
+  var max = sequence.length,
+      timeout;
+  return new Promise(function(resolve){
+    timeout = setTimeout(function(){
+      sequence.forEach(function(current, index){
+        setTimeout(function(){
+          callback(current, index, max);
+          if( index === max - 1 ) {
+            resolve();
+          }
+        }, delay * index);
+      });
+    }, delay);
+  });
+};
