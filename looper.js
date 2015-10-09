@@ -75,11 +75,24 @@ looper.clickSelector = function(selector){
   };
 };
 
-looper.sequencer = function(sequence, callback, delay) {
+looper.sequencer = function(sequence, callback, delay, options) {
   var max = sequence.length,
-      timeout;
+      timeout,
+      defaults = {
+        before: function(){},
+        after: function(){},
+        delay: 500,
+        initialDelay: 1000
+      },
+      options = options || (options = {});
+
+  var before = 'before' in options && options.before instanceof Function ? options.before : defaults.before,
+      after = 'after' in options && options.after instanceof Function ? options.after : defaults.after,
+      initialDelay = 'initialDelay' in options && options.initialDelay > 0 ? options.initialDelay : defaults.initialDelay;
+
   return new Promise(function(resolve){
     timeout = setTimeout(function(){
+      before(sequence);
       sequence.forEach(function(current, index){
         setTimeout(function(){
           callback(current, index, max);
@@ -88,6 +101,7 @@ looper.sequencer = function(sequence, callback, delay) {
           }
         }, delay * index);
       });
-    }, delay);
-  });
+    }, initialDelay);
+  }).then(after);
 };
+

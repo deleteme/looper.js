@@ -152,4 +152,21 @@ describe("looper.sequencer()", function(){
         });
     });
 
+    it("executes a before() and after() callback if provided", function(done){
+        var callback = sandbox.spy(),
+            sequence = [1,2,3],
+            delay = 50,
+            before = sandbox.spy(),
+            after = sandbox.spy(),
+            seq = looper.sequencer(sequence, callback, delay, {
+                before: before,
+                after: after
+            });
+        seq.then(function(){
+            sinon.assert.calledOnce(before);
+            sinon.assert.calledOnce(after);
+            done();
+        });
+    });
 });
+
