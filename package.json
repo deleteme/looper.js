@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "Helps find memory leaks",
   "main": "looper.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "jquery": "^2.1.4",
+    "jquery": "^3.2.1",
     "mocha": "^2.3.3",
     "sinon": "^1.7.3",
     "testem": "^0.9.7"
