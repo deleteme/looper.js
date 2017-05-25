@@ -1,39 +1,40 @@
 /*
 Usage:
-var sequence = [function(){}, function(){}, function(){}];
-var loop = looper(sequence, 153);
+const sequence = [function(){}, function(){}, function(){}];
+const loop = looper(sequence, 153);
 loop();
 */
-var looper = function(sequence, runs){
+const looper = function(sequence, runs){
 
-  var groupMessage = 'Looping %s runs of %s functions';
-  var logMessage   = '%s runs/s, %s functions/s';
-  var defaultRuns  = 27;
+  const groupMessage = 'Looping %s runs of %s functions';
+  const logMessage   = '%s runs/s, %s functions/s';
+  const defaultRuns  = 27;
 
   function loop(value){
     return new Promise(function(resolve){
       console.group(groupMessage, loop.runs, loop.sequence.length);
       console.time('Duration');
-      var start = Date.now();
-      var sl    = loop.sequence.length;
-      var l     = loop.runs * sl;
-      var i     = 0;
+      const start = Date.now();
+      const sl    = loop.sequence.length;
+      const l     = loop.runs * sl;
+      let i       = 0;
       function log(val){
-        var end                = Date.now();
-        var duration           = end - start;
-        var runsPerSecond      = loop.runs / duration * 1000;
-        var functionsPerSecond = l / duration * 1000;
+        const end                = Date.now();
+        const duration           = end - start;
+        const runsPerSecond      = loop.runs / duration * 1000;
+        const functionsPerSecond = l / duration * 1000;
         console.log(logMessage, (runsPerSecond).toFixed(1), (functionsPerSecond).toFixed(1));
         console.timeEnd('Duration');
         console.groupEnd(groupMessage);
         return val;
       }
 
-      function next(val){
-        var fn = loop.sequence[i % sl];
+      async function next(val){
+        const fn = loop.sequence[i % sl];
         if (i < l) {
           i++;
-          return Promise.resolve(fn(val)).then(next);
+          const result = await fn(val)
+          next(result);
         } else {
           log(val);
           resolve(val);
@@ -53,24 +54,26 @@ var looper = function(sequence, runs){
 };
 
 
-looper.click = function(el){
+looper.click = function(element){
   return function(){
     return new Promise(function(resolve){
-      var $el = $(el).eq(0);
-      $el.on('click.looper', function(){
+      const handler = function(){
         setTimeout(resolve, 250);
-        $el.off('click.looper');
-      });
-      $el.get(0).click();
-    });
+        element.removeEventListener('click', handler);
+      };
+      element.addEventListener('click', handler);
+      element.click();
+    })
   };
 };
 
 looper.clickSelector = function(selector){
   return function(){
     return new Promise(function(resolve){
-      $(selector).eq(0).click();
+      document.querySelectorAll(selector)[0].click();
       setTimeout(resolve, 100);
     });
   };
 };
+
+export default looper;

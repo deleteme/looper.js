@@ -5,14 +5,14 @@
   "main": "looper.js",
   "dependencies": {},
   "devDependencies": {
-    "expect.js": "^0.3.1",
+    "babel": "^6.23.0",
+    "babel-preset-env": "^1.5.1",
+    "jest": "^20.0.4",
     "jquery": "^3.2.1",
-    "mocha": "^2.3.3",
-    "sinon": "^1.7.3",
-    "testem": "^0.9.7"
+    "sinon": "^2.3.1"
   },
   "scripts": {
-    "test": "testem ci"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
