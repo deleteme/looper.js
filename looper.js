@@ -6,14 +6,14 @@ loop();
 */
 import clickSelector from './src/click-selector.js'
 
-const looper = function(sequence, runs){
+const looper = (sequence, runs) => {
 
   const groupMessage = 'Looping %s runs of %s functions';
   const logMessage   = '%s runs/s, %s functions/s';
   const defaultRuns  = 27;
 
   function loop(value){
-    return new Promise(function(resolve){
+    return new Promise(resolve => {
       console.group(groupMessage, loop.runs, loop.sequence.length);
       console.time('Duration');
       const start = Date.now();
@@ -55,18 +55,14 @@ const looper = function(sequence, runs){
 
 };
 
-looper.click = function(element){
-  return function(){
-    return new Promise(function(resolve){
-      const handler = function(){
-        setTimeout(resolve, 250);
-        element.removeEventListener('click', handler);
-      };
-      element.addEventListener('click', handler);
-      element.click();
-    })
+looper.click = element => () => new Promise(resolve => {
+  const handler = () => {
+    setTimeout(resolve, 250);
+    element.removeEventListener('click', handler);
   };
-};
+  element.addEventListener('click', handler);
+  element.click();
+});
 
 looper.clickSelector = clickSelector;
 
