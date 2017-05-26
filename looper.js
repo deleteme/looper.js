@@ -4,6 +4,8 @@ const sequence = [function(){}, function(){}, function(){}];
 const loop = looper(sequence, 153);
 loop();
 */
+import clickSelector from './src/click-selector.js'
+
 const looper = function(sequence, runs){
 
   const groupMessage = 'Looping %s runs of %s functions';
@@ -53,7 +55,6 @@ const looper = function(sequence, runs){
 
 };
 
-
 looper.click = function(element){
   return function(){
     return new Promise(function(resolve){
@@ -67,13 +68,6 @@ looper.click = function(element){
   };
 };
 
-looper.clickSelector = function(selector){
-  return function(){
-    return new Promise(function(resolve){
-      document.querySelectorAll(selector)[0].click();
-      setTimeout(resolve, 100);
-    });
-  };
-};
+looper.clickSelector = clickSelector;
 
 export default looper;
