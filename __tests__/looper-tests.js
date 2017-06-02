@@ -1,11 +1,11 @@
-import looper from "../looper.js";
-import sinon from "sinon";
+import looper from '../looper.js';
+import sinon from 'sinon';
 
 const assertNotCalled = value => {
   throw new Error(`This should not be called. Received ${value}.`);
 };
 
-describe("looper", () => {
+describe('looper', () => {
   let loop, cycle;
   let sandbox;
 
@@ -24,7 +24,7 @@ describe("looper", () => {
     sandbox.restore();
   });
 
-  it("accepts a value, passed to the functions.", () => {
+  it('accepts a value, passed to the functions.', () => {
     let addOne = sandbox.spy(n => n + 1);
     let addTwo = sandbox.spy(n => n + 2);
     loop = looper([addOne, addTwo]);
@@ -36,7 +36,7 @@ describe("looper", () => {
     return loop(11).then(assert, assertNotCalled);
   });
 
-  it("is a promise of the final value.", () => {
+  it('is a promise of the final value.', () => {
     let addOne = n => n + 1;
     loop = looper([addOne, addOne]);
     loop.runs = 40;
@@ -45,7 +45,7 @@ describe("looper", () => {
     }, assertNotCalled);
   });
 
-  it("defaults to 27 runs.", () => {
+  it('defaults to 27 runs.', () => {
     let runs = 27;
     return loop().then(() => {
       expect(loop.runs).toBe(runs);
@@ -64,13 +64,13 @@ describe("looper", () => {
     }, assertNotCalled);
   });
 
-  it("should console.log with a summary when finished.", () => {
-    sandbox.spy(console, "log");
+  it('should console.log with a summary when finished.', () => {
+    sandbox.spy(console, 'log');
     let fixedRegExp = /^\d+\.\d$/;
     return loop().then(() => {
       sinon.assert.calledWithMatch(
         console.log,
-        "%s runs/s, %s functions/s",
+        '%s runs/s, %s functions/s',
         fixedRegExp,
         fixedRegExp
       );
@@ -79,7 +79,7 @@ describe("looper", () => {
 
   // Using functions that finish in a random duration,
   // assert that looper is able to finish all runs and report.
-  it("supports async functions of varying duration.", () => {
+  it('supports async functions of varying duration.', () => {
     let min = 0;
     let max = 200;
     let start = Date.now();
@@ -106,7 +106,7 @@ describe("looper", () => {
   });
 });
 
-describe("looper.click()", () => {
+describe('looper.click()', () => {
   let sandbox;
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
@@ -114,12 +114,12 @@ describe("looper.click()", () => {
   afterEach(() => {
     sandbox.restore();
   });
-  describe("returned composed function", () => {
+  describe('returned composed function', () => {
     it("returns a promise that resolves ~50ms after the element's clicked.", () => {
       let handler = sandbox.spy();
       let click = looper.click(document.body);
       let start = Date.now();
-      document.body.addEventListener("click", handler);
+      document.body.addEventListener('click', handler);
       return click().then(() => {
         let now = Date.now();
         expect(now - start > 50).toBe(true);

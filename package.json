@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Helps find memory leaks",
   "main": "looper.js",
-  "dependencies": {},
+  "dependencies": {
+    "prettier": "^1.3.1"
+  },
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-preset-env": "^1.5.1",
@@ -12,7 +14,8 @@
     "sinon": "^2.3.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\""
   },
   "repository": {
     "type": "git",
