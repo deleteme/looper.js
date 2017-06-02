@@ -1,12 +1,8 @@
-import timeout from './timeout';
-
-const noop = () => {
-  return undefined;
-};
+import clickElement from './click-element';
 
 const clickSelector = selector => () => {
-  document.querySelectorAll(selector)[0].click();
-  return timeout(noop, 100);
+  const element = document.querySelectorAll(selector)[0];
+  return clickElement(element)();
 };
 
 export default clickSelector;
