@@ -122,7 +122,7 @@ describe('looper.click()', () => {
       document.body.addEventListener('click', handler);
       return click().then(() => {
         let now = Date.now();
-        expect(now - start > 50).toBe(true);
+        expect(now - start >= 50).toBe(true);
         sinon.assert.calledOnce(handler);
       }, assertNotCalled);
     });
