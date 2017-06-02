@@ -7,11 +7,10 @@ loop();
 import clickSelector from './src/click-selector'
 import clickElement from './src/click-element';
 
-const looper = (sequence, runs) => {
+const looper = (sequence, runs = 27) => {
 
   const groupMessage = 'Looping %s runs of %s functions';
   const logMessage   = '%s runs/s, %s functions/s';
-  const defaultRuns  = 27;
 
   function loop(value){
     return new Promise(resolve => {
@@ -50,7 +49,7 @@ const looper = (sequence, runs) => {
   }
 
   loop.sequence = sequence;
-  loop.runs = runs || defaultRuns;
+  loop.runs = runs;
 
   return loop;
 
