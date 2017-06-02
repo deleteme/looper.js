@@ -2,7 +2,7 @@
   "name": "looper.js",
   "version": "1.0.0",
   "description": "Helps find memory leaks",
-  "main": "looper.js",
+  "main": "index.js",
   "dependencies": {
     "prettier": "^1.3.1"
   },

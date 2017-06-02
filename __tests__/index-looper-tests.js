@@ -1,4 +1,4 @@
-import looper from '../looper.js';
+import looper from '../index.js';
 import sinon from 'sinon';
 
 const assertNotCalled = value => {
