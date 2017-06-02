@@ -25,8 +25,8 @@ describe('looper', () => {
   });
 
   it('accepts a value, passed to the functions.', () => {
-    let addOne = sandbox.spy(n => n + 1);
-    let addTwo = sandbox.spy(n => n + 2);
+    const addOne = sandbox.spy(n => n + 1);
+    const addTwo = sandbox.spy(n => n + 2);
     loop = looper([addOne, addTwo]);
     loop.runs = 1;
     const assert = () => {
@@ -37,7 +37,7 @@ describe('looper', () => {
   });
 
   it('is a promise of the final value.', () => {
-    let addOne = n => n + 1;
+    const addOne = n => n + 1;
     loop = looper([addOne, addOne]);
     loop.runs = 40;
     return loop(0).then(n => {
@@ -46,7 +46,7 @@ describe('looper', () => {
   });
 
   it('defaults to 27 runs.', () => {
-    let runs = 27;
+    const runs = 27;
     return loop().then(() => {
       expect(loop.runs).toBe(runs);
       sinon.assert.callCount(cycle[0], runs);
@@ -66,7 +66,7 @@ describe('looper', () => {
 
   it('should console.log with a summary when finished.', () => {
     sandbox.spy(console, 'log');
-    let fixedRegExp = /^\d+\.\d$/;
+    const fixedRegExp = /^\d+\.\d$/;
     return loop().then(() => {
       sinon.assert.calledWithMatch(
         console.log,
@@ -80,9 +80,9 @@ describe('looper', () => {
   // Using functions that finish in a random duration,
   // assert that looper is able to finish all runs and report.
   it('supports async functions of varying duration.', () => {
-    let min = 0;
-    let max = 200;
-    let start = Date.now();
+    const min = 0;
+    const max = 200;
+    const start = Date.now();
 
     function delay(ms) {
       return new Promise(resolve => {
@@ -90,16 +90,16 @@ describe('looper', () => {
       });
     }
 
-    let random = value => {
-      let ms = randomFromInterval(min, max);
+    const random = value => {
+      const ms = randomFromInterval(min, max);
       return delay(ms).then(() => value + 1);
     };
-    let sequence = [random, random, random];
+    const sequence = [random, random, random];
     loop = looper(sequence);
     loop.runs = 3;
     return loop(0).then(value => {
-      let finish = Date.now();
-      let difference = finish - start;
+      const finish = Date.now();
+      const difference = finish - start;
       expect(value).toBe(9); // runs * sequence.length
       expect(difference < 7500).toBe(true); // max * runs * sequence.length
     }, assertNotCalled);
@@ -107,24 +107,13 @@ describe('looper', () => {
 });
 
 describe('looper.click()', () => {
-  let sandbox;
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+  it('should be a Function', () => {
+    expect(looper.click).toBeInstanceOf(Function);
   });
-  afterEach(() => {
-    sandbox.restore();
-  });
-  describe('returned composed function', () => {
-    it("returns a promise that resolves ~50ms after the element's clicked.", () => {
-      let handler = sandbox.spy();
-      let click = looper.click(document.body);
-      let start = Date.now();
-      document.body.addEventListener('click', handler);
-      return click().then(() => {
-        let now = Date.now();
-        expect(now - start >= 50).toBe(true);
-        sinon.assert.calledOnce(handler);
-      }, assertNotCalled);
-    });
+});
+
+describe('looper.clickSelector()', () => {
+  it('should be a Function', () => {
+    expect(looper.clickSelector).toBeInstanceOf(Function);
   });
 });
