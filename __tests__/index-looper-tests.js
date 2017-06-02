@@ -4,6 +4,10 @@ import sinon from 'sinon';
 const assertNotCalled = value => {
   throw new Error(`This should not be called. Received ${value}.`);
 };
+const originalConsoleGroup = console.group;
+const noop = () => {
+  return;
+};
 
 describe('looper', () => {
   let loop, cycle;
@@ -18,10 +22,15 @@ describe('looper', () => {
     sandbox = sinon.sandbox.create();
     cycle = [sandbox.stub(), sandbox.stub(), sandbox.stub()];
     loop = looper(cycle);
+    if (!console.group) {
+      console.group = noop;
+      console.groupEnd = noop;
+    }
   });
 
   afterEach(() => {
     sandbox.restore();
+    console.group = originalConsoleGroup;
   });
 
   it('accepts a value, passed to the functions.', () => {
@@ -36,13 +45,11 @@ describe('looper', () => {
     return loop(11).then(assert, assertNotCalled);
   });
 
-  it('is a promise of the final value.', () => {
+  it('is a Promise of the final value.', () => {
     const addOne = n => n + 1;
     loop = looper([addOne, addOne]);
     loop.runs = 40;
-    return loop(0).then(n => {
-      expect(n).toBe(80);
-    }, assertNotCalled);
+    return expect(loop(0)).resolves.toBe(80);
   });
 
   it('defaults to 27 runs.', () => {

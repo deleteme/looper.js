@@ -4,15 +4,15 @@ const looper = (sequence, runs = 27) => {
   const { logStart, logEnd } = makeLogger();
 
   async function loop(value) {
-    const sl = loop.sequence.length;
-    const l = loop.runs * sl;
+    const sequenceLength = loop.sequence.length;
+    const l = loop.runs * sequenceLength;
     let i = 0;
 
     logStart(loop.runs, loop.sequence);
 
     const p = new Promise(resolve => {
       async function next(val) {
-        const fn = loop.sequence[i % sl];
+        const fn = loop.sequence[i % sequenceLength];
         if (i < l) {
           i++;
           const result = await fn(val);
@@ -25,6 +25,7 @@ const looper = (sequence, runs = 27) => {
       next(value);
     });
     const val = await p;
+
     logEnd(val);
     return p;
   }
