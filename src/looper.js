@@ -27,7 +27,7 @@ const looper = (sequence, runs = 27) => {
     const val = await p;
 
     logEnd(val);
-    return p;
+    return val;
   }
 
   loop.sequence = sequence;
