@@ -1,51 +1,58 @@
 import looper from '../index.js';
-import sinon from 'sinon';
 
 const assertNotCalled = value => {
   throw new Error(`This should not be called. Received ${value}.`);
 };
 const originalConsoleGroup = console.group;
+const originalConsoleGroupEnd = console.groupEnd;
 const noop = () => {
   return;
 };
 
 describe('looper', () => {
   let loop, cycle;
-  let sandbox;
 
   // yanked from http://stackoverflow.com/questions/4959975/generate-random-value-between-two-numbers-in-javascript
   function randomFromInterval(from, to) {
     return Math.floor(Math.random() * (to - from + 1) + from);
   }
 
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create();
-    cycle = [sandbox.stub(), sandbox.stub(), sandbox.stub()];
-    loop = looper(cycle);
+  beforeAll(() => {
     if (!console.group) {
       console.group = noop;
       console.groupEnd = noop;
     }
   });
+  beforeEach(() => {
+    cycle = [jest.fn(), jest.fn(), jest.fn()];
+    loop = looper(cycle);
+  });
 
   afterEach(() => {
-    sandbox.restore();
+    jest.clearAllMocks();
+  });
+  afterAll(() => {
     console.group = originalConsoleGroup;
+    console.groupEnd = originalConsoleGroupEnd;
   });
 
   it('accepts a value, passed to the functions.', () => {
-    const addOne = sandbox.spy(n => n + 1);
-    const addTwo = sandbox.spy(n => n + 2);
+    expect.assertions(4);
+    const addOne = jest.fn(n => n + 1);
+    const addTwo = jest.fn(n => n + 2);
     loop = looper([addOne, addTwo]);
     loop.runs = 1;
     const assert = () => {
-      sinon.assert.calledWith(addOne, 11);
-      sinon.assert.calledWith(addTwo, 12);
+      expect(addOne).toHaveBeenCalledWith(11);
+      expect(addOne).toHaveBeenCalledTimes(1);
+      expect(addTwo).toHaveBeenCalledWith(12);
+      expect(addTwo).toHaveBeenCalledTimes(1);
     };
     return loop(11).then(assert, assertNotCalled);
   });
 
   it('is a Promise of the final value.', () => {
+    expect.assertions(1);
     const addOne = n => n + 1;
     loop = looper([addOne, addOne]);
     loop.runs = 40;
@@ -53,33 +60,35 @@ describe('looper', () => {
   });
 
   it('defaults to 27 runs.', () => {
+    expect.assertions(4);
     const runs = 27;
     return loop().then(() => {
       expect(loop.runs).toBe(runs);
-      sinon.assert.callCount(cycle[0], runs);
-      sinon.assert.callCount(cycle[1], runs);
-      sinon.assert.callCount(cycle[2], runs);
+      expect(cycle[0]).toHaveBeenCalledTimes(runs);
+      expect(cycle[1]).toHaveBeenCalledTimes(runs);
+      expect(cycle[2]).toHaveBeenCalledTimes(runs);
     }, assertNotCalled);
   });
 
   it("should respect changes to runs property after the function's been composed.", () => {
+    expect.assertions(3);
     loop.runs = 123;
     return loop().then(() => {
-      sinon.assert.callCount(cycle[0], 123);
-      sinon.assert.callCount(cycle[1], 123);
-      sinon.assert.callCount(cycle[2], 123);
+      expect(cycle[0]).toHaveBeenCalledTimes(loop.runs);
+      expect(cycle[1]).toHaveBeenCalledTimes(loop.runs);
+      expect(cycle[2]).toHaveBeenCalledTimes(loop.runs);
     }, assertNotCalled);
   });
 
   it('should console.log with a summary when finished.', () => {
-    sandbox.spy(console, 'log');
+    expect.assertions(1);
+    jest.spyOn(console, 'log');
     const fixedRegExp = /^\d+\.\d$/;
     return loop().then(() => {
-      sinon.assert.calledWithMatch(
-        console.log,
+      expect(console.log).toHaveBeenCalledWith(
         '%s runs/s, %s functions/s',
-        fixedRegExp,
-        fixedRegExp
+        expect.stringMatching(fixedRegExp),
+        expect.stringMatching(fixedRegExp)
       );
     }, assertNotCalled);
   });
@@ -87,6 +96,7 @@ describe('looper', () => {
   // Using functions that finish in a random duration,
   // assert that looper is able to finish all runs and report.
   it('supports async functions of varying duration.', () => {
+    expect.assertions(2);
     const min = 0;
     const max = 200;
     const start = Date.now();
@@ -115,12 +125,14 @@ describe('looper', () => {
 
 describe('looper.click()', () => {
   it('should be a Function', () => {
+    expect.assertions(1);
     expect(looper.click).toBeInstanceOf(Function);
   });
 });
 
 describe('looper.clickSelector()', () => {
   it('should be a Function', () => {
+    expect.assertions(1);
     expect(looper.clickSelector).toBeInstanceOf(Function);
   });
 });
