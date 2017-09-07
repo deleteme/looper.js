@@ -98,9 +98,9 @@ describe('looper', () => {
   // Using functions that finish in a random duration,
   // assert that looper is able to finish all runs and report.
   it('supports async functions of varying duration.', () => {
-    expect.assertions(2);
+    expect.assertions(3);
     const min = 0;
-    const max = 200;
+    const max = 20;
     const start = Date.now();
 
     function delay(ms) {
@@ -120,7 +120,8 @@ describe('looper', () => {
       const finish = Date.now();
       const difference = finish - start;
       expect(value).toBe(9); // runs * sequence.length
-      expect(difference < 7500).toBe(true); // max * runs * sequence.length
+      expect(difference > 0).toBe(true);
+      expect(difference <= 750).toBe(true); // max * runs * sequence.length
     }, assertNotCalled);
   });
 });
