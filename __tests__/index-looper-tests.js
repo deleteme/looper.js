@@ -23,6 +23,7 @@ describe('looper', () => {
       console.groupEnd = noop;
     }
   });
+
   beforeEach(() => {
     cycle = [jest.fn(), jest.fn(), jest.fn()];
     loop = looper(cycle);
@@ -31,6 +32,7 @@ describe('looper', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
+
   afterAll(() => {
     console.group = originalConsoleGroup;
     console.groupEnd = originalConsoleGroupEnd;
