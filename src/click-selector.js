@@ -1,4 +1,4 @@
-import clickElement from './click-element';
+import clickElement from './click-element.js';
 
 const clickSelector = selector => () => {
   const element = document.querySelectorAll(selector)[0];

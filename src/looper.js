@@ -1,4 +1,4 @@
-import makeLogger from './logger';
+import makeLogger from './logger.js';
 
 const looper = (sequence, runs = 27) => {
   const { logStart, logEnd } = makeLogger();

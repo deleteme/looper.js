@@ -27,7 +27,7 @@
     </ol>
 
     <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script src="looper.js"></script>
+    <script type="module" src="index.js">console.log('looper', looper)</script>
     <script>
 
       // sample leaky app
@@ -53,8 +53,8 @@
 
       // example looper setup
       $(function(){
-        var setup = looper.click("#show");
-        var teardown = looper.click("#hide");
+        var setup = looper.clickSelector("#show");
+        var teardown = looper.clickSelector("#hide");
         var runs = Number($("#count").val());
         var loop = looper([setup, teardown], runs);
         function done(){

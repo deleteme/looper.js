@@ -126,16 +126,16 @@ describe('looper', () => {
   });
 });
 
-describe('looper.click()', () => {
+describe('looper.clickElement()', () => {
   it('should be a Function', () => {
     expect.assertions(1);
-    expect(looper.click).toBeInstanceOf(Function);
+    expect(typeof looper.clickElement).toBe('function');
   });
 });
 
 describe('looper.clickSelector()', () => {
   it('should be a Function', () => {
     expect.assertions(1);
-    expect(looper.clickSelector).toBeInstanceOf(Function);
+    expect(typeof looper.clickSelector).toBe('function');
   });
 });
