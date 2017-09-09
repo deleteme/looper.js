@@ -1,6 +1,5 @@
 import looper from "./index.js";
 import { $, $$ } from './src/dom/query.js'
-import { addClass, removeClass } from './src/dom/class-list.js'
 import { on } from './src/dom/event.js';
 
 // leaky app
@@ -14,10 +13,14 @@ function make() {
 
 const showModal = () => {
   hideModal();
-  removeClass(make(), 'hidden');
+  make()
 };
 
-const hideModal = () => addClass($$(".modal"), 'hidden');
+const hideModal = () => {
+  for (let element of $$(".modal")) {
+    element.classList.add('hidden')
+  }
+}
 
 on($("show-button"), "click", showModal);
 on($("hide-button"), "click", hideModal);
