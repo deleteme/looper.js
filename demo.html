@@ -1,16 +1,24 @@
 <html>
   <head>
     <title>looper demo</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
   <body>
-    <button id="show">Show</button>
-    <button id="hide">Hide</button>
+    <button id="show-button">Show</button>
+    <button id="hide-button">Hide</button>
 
     <hr />
     <button id="loop">Loop</button>
     <input id="count" value="53" />
     <label for="count">times</label>
+    <span id="log"></span>
     <hr />
 
     <p>
@@ -26,44 +34,7 @@
       <li>Select "Take Heap Snapshot" and click "Take Snapshot" to record a snapshot after the leak has been introduced.</li>
     </ol>
 
-    <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script type="module" src="index.js">console.log('looper', looper)</script>
-    <script>
-
-      // sample leaky app
-      $(function(){
-
-        function make(){
-          return $("<div class='modal' />").appendTo('body').html('modal');
-        }
-
-        function show(){
-          hide();
-          return make().show();
-        }
-
-        function hide(){
-          return $(".modal").hide();
-        }
-
-        $("#show").on('click', show);
-        $("#hide").on('click', hide);
-
-      });
-
-      // example looper setup
-      $(function(){
-        var setup = looper.clickSelector("#show");
-        var teardown = looper.clickSelector("#hide");
-        var runs = Number($("#count").val());
-        var loop = looper([setup, teardown], runs);
-        function done(){
-          $('label').after("<span style='color:red;'>Done</span>");
-        }
-        $("#loop").on('click', function(){
-          loop().then(done)
-        });
-      });
-    </script>
+    <script type="module" src="index.js"></script>
+    <script type="module" src="sample-leaky-app.js"></script>
   </body>
 </html>
