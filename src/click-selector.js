@@ -1,7 +1,8 @@
 import clickElement from './click-element.js';
+import { $$ } from './dom/query.js'
 
 const clickSelector = selector => () => {
-  const element = document.querySelectorAll(selector)[0];
+  const [element] = $$(selector);
   return clickElement(element)();
 };
 
