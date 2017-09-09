@@ -11,16 +11,8 @@
     </style>
   </head>
   <body>
-    <button id="show-button">Show</button>
-    <button id="hide-button">Hide</button>
 
-    <hr />
-    <button id="loop">Loop</button>
-    <input id="count" value="53" />
-    <label for="count">times</label>
-    <span id="log"></span>
-    <hr />
-
+    <h1>Looper Demo</h1>
     <p>
     This page has an example of leaky code. 'Show' and 'Hide' buttons toggle
     the visibility of a modal. The show handler makes a new element, but the
@@ -33,6 +25,17 @@
       <li>Click the "Loop" button on the page and let it finish.</li>
       <li>Select "Take Heap Snapshot" and click "Take Snapshot" to record a snapshot after the leak has been introduced.</li>
     </ol>
+
+    <hr />
+    <button id="show-button">Show</button>
+    <button id="hide-button">Hide</button>
+
+    <hr />
+    <button id="loop">Loop</button>
+    <input id="count" value="53" />
+    <label for="count">times</label>
+    <span id="log"></span>
+    <hr />
 
     <script type="module" src="index.js"></script>
     <script type="module" src="sample-leaky-app.js"></script>
