@@ -1,20 +1,7 @@
 import looper from "./index.js";
-const $ = id => document.getElementById(id);
-const $$ = selector => document.querySelectorAll(selector);
-const wrap2 = func =>
-  function process(elements) {
-    if (!elements) return;
-    const args = Array.from(arguments).slice(1);
-    if (elements instanceof Element) elements = [elements];
-    for (let element of elements) {
-      func.apply(this, [element, ...args]);
-    }
-  };
-const show = wrap2(element => element.classList.remove("hidden"));
-const hide = wrap2(element => element.classList.add("hidden"));
-const on = wrap2((element, type, handler) =>
-  element.addEventListener(type, handler)
-);
+import { $, $$ } from './src/dom/query.js'
+import { addClass, removeClass } from './src/dom/class-list.js'
+import { on } from './src/dom/event.js';
 
 // leaky app
 function make() {
@@ -27,10 +14,10 @@ function make() {
 
 const showModal = () => {
   hideModal();
-  show(make());
+  removeClass(make(), 'hidden');
 };
 
-const hideModal = () => hide($$(".modal"));
+const hideModal = () => addClass($$(".modal"), 'hidden');
 
 on($("show-button"), "click", showModal);
 on($("hide-button"), "click", hideModal);
