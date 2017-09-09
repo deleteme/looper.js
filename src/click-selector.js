@@ -1,5 +1,5 @@
 import clickElement from './click-element.js';
-import { $$ } from './dom/query.js'
+import { $$ } from './dom/query.js';
 
 const clickSelector = selector => () => {
   const [element] = $$(selector);
