@@ -1,4 +1,3 @@
-import { on, off } from './event.js';
 import { $$ } from './query.js';
 
 const body = () => $$('body')[0];
@@ -7,21 +6,21 @@ const click = element =>
   new Promise(resolve => {
     let directHandlerTimeout;
     const directHandler = () => {
-      off(element, 'click', directHandler);
+      element.removeEventListener('click', directHandler);
       directHandlerTimeout = setTimeout(() => {
-        off(body(), 'click', bubblingHandler);
+        body().removeEventListener('click', bubblingHandler);
         resolve();
       }, 50);
     };
     const bubblingHandler = e => {
       if (e.target === element) {
-        off(body(), 'click', bubblingHandler);
+        body().removeEventListener('click', bubblingHandler);
         clearTimeout(directHandlerTimeout);
         setTimeout(resolve, 0);
       }
     };
-    on(element, 'click', directHandler);
-    on(body(), 'click', bubblingHandler);
+    element.addEventListener('click', directHandler);
+    body().addEventListener('click', bubblingHandler);
     element.click();
   });
 export default click;
