@@ -45,3 +45,29 @@ on($('reset-button'), 'click', () => {
   }
 });
 
+// loop the looper!
+on($('looper-loop-button'), 'click', async () => {
+  await looper(
+    [
+      looper.clickSelector('#start-loop-button'),
+      () => {
+        // poll for the looping to finish
+        return new Promise(resolve => {
+          const poll = () => {
+            console.log('poll called');
+            const isFinished = !$('start-loop-button').disabled;
+            console.log('isFinished:', isFinished);
+            if (isFinished) {
+              console.log('clearInterval pollingInterval:', pollingInterval);
+              clearInterval(pollingInterval);
+              resolve();
+            }
+          };
+          let pollingInterval = setInterval(poll, 10);
+        });
+      },
+      looper.clickSelector('#reset-button')
+    ],
+    3
+  )();
+});
