@@ -28,12 +28,12 @@ on($("hide-modal-button"), "click", hideModal);
 // example looper setup
 const setup = looper.clickSelector("#show-modal-button");
 const teardown = looper.clickSelector("#hide-modal-button");
-const runs = 53;
-$("count").value = runs;
+const runs = Number($('count').value)
 const loop = looper([setup, teardown], runs);
 
 on($("start-loop-button"), "click", async () => {
   $("start-loop-button").disabled = true;
+  $("log").innerHTML = "";
   await loop();
   $("start-loop-button").disabled = false;
   $("log").innerHTML = "<span style='color:red;'>Done</span>";
