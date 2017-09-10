@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "jest",
-    "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\"",
+    "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\" \"./*.js\"",
     "serve": "serve --clipless --cache=0"
   },
   "repository": {
