@@ -6,11 +6,13 @@
   "dependencies": {},
   "devDependencies": {
     "jest": "^21.0.2",
-    "prettier": "^1.5.3"
+    "prettier": "^1.5.3",
+    "serve": "^6.0.6"
   },
   "scripts": {
     "test": "jest",
-    "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\""
+    "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\"",
+    "serve": "serve --clipless --cache=0"
   },
   "repository": {
     "type": "git",
