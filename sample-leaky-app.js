@@ -26,12 +26,11 @@ on($('show-modal-button'), 'click', showModal);
 on($('hide-modal-button'), 'click', hideModal);
 
 // example looper setup
-const setup = looper.clickSelector('#show-modal-button');
-const teardown = looper.clickSelector('#hide-modal-button');
-const runs = Number($('count').value);
-const loop = looper([setup, teardown], runs);
-
 on($('start-loop-button'), 'click', async () => {
+  const setup = looper.clickSelector('#show-modal-button');
+  const teardown = looper.clickSelector('#hide-modal-button');
+  const runs = Number($('count').value);
+  const loop = looper([setup, teardown], runs);
   $('start-loop-button').disabled = true;
   $('log').innerHTML = '';
   await loop();
@@ -54,11 +53,8 @@ on($('looper-loop-button'), 'click', async () => {
         // poll for the looping to finish
         return new Promise(resolve => {
           const poll = () => {
-            console.log('poll called');
             const isFinished = !$('start-loop-button').disabled;
-            console.log('isFinished:', isFinished);
             if (isFinished) {
-              console.log('clearInterval pollingInterval:', pollingInterval);
               clearInterval(pollingInterval);
               resolve();
             }

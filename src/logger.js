@@ -1,7 +1,14 @@
-const groupMessage = 'Looping %s runs of %s functions';
 const logMessage = '%s runs/s, %s functions/s';
+
+var numLoggers = 0;
+
 const makeLogger = () => {
   let start, runs, sequence, totalFunctions;
+  numLoggers += 1;
+
+  const id = numLoggers;
+  const groupMessage = `${id}. Looping %s runs of %s functions`;
+  const timeMessage = `${id}. Duration`;
 
   const logStart = (_runs, _sequence) => {
     start = Date.now();
@@ -9,7 +16,7 @@ const makeLogger = () => {
     sequence = _sequence;
     totalFunctions = runs * sequence.length;
     console.group(groupMessage, runs, sequence.length);
-    console.time('Duration');
+    console.time(timeMessage);
   };
 
   const logEnd = value => {
@@ -23,7 +30,7 @@ const makeLogger = () => {
       runsPerSecond.toFixed(1),
       functionsPerSecond.toFixed(1)
     );
-    console.timeEnd('Duration');
+    console.timeEnd(timeMessage);
     console.groupEnd(groupMessage);
     return value;
   };
