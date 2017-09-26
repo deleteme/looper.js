@@ -8,12 +8,14 @@
     "babel-preset-env": "^1.5.1",
     "jest": "^21.0.2",
     "prettier": "^1.5.3",
+    "rollup": "^0.50.0",
     "serve": "^6.0.6"
   },
   "scripts": {
     "test": "jest",
     "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\" \"./*.js\"",
-    "serve": "serve --clipless --cache=0"
+    "serve": "serve --clipless --cache=0",
+    "build": "rollup index.js --format iife --output dist/looper.js --name looper"
   },
   "repository": {
     "type": "git",

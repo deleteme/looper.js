@@ -1,156 +1,114 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+var looper = (function () {
+'use strict';
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/*
-Usage:
-var sequence = [function(){}, function(){}, function(){}];
-var loop = looper(sequence, 153);
-loop();
-*/
-var looper = function(sequence, runs){
+const $$ = selector => document.querySelectorAll(selector);
 
-  var groupMessage = 'Looping %s runs of %s functions';
-  var logMessage   = '%s runs/s, %s functions/s';
-  var defaultRuns  = 27;
+const body = () => $$('body')[0];
 
-  function loop(value){
-    return new Promise(function(resolve){
-      console.group(groupMessage, loop.runs, loop.sequence.length);
-      console.time('Duration');
-      var start = Date.now();
-      var sl    = loop.sequence.length;
-      var l     = loop.runs * sl;
-      var i     = 0;
-      function log(val){
-        var end                = Date.now();
-        var duration           = end - start;
-        var runsPerSecond      = loop.runs / duration * 1000;
-        var functionsPerSecond = l / duration * 1000;
-        console.log(logMessage, (runsPerSecond).toFixed(1), (functionsPerSecond).toFixed(1));
-        console.timeEnd('Duration');
-        console.groupEnd(groupMessage);
-        return val;
+const click = element =>
+  new Promise(resolve => {
+    let directHandlerTimeout;
+    const directHandler = () => {
+      element.removeEventListener('click', directHandler);
+      directHandlerTimeout = setTimeout(() => {
+        body().removeEventListener('click', bubblingHandler);
+        resolve();
+      }, 50);
+    };
+    const bubblingHandler = e => {
+      if (e.target === element) {
+        body().removeEventListener('click', bubblingHandler);
+        clearTimeout(directHandlerTimeout);
+        setTimeout(resolve, 0);
       }
+    };
+    element.addEventListener('click', directHandler);
+    body().addEventListener('click', bubblingHandler);
+    element.click();
+  });
 
-      function next(val){
-        var fn = loop.sequence[i % sl];
-        if (i < l) {
-          i++;
-          return Promise.resolve(fn(val)).then(next);
-        } else {
-          log(val);
-          resolve(val);
-        }
+const clickElement = element => () => click(element);
+
+const clickSelector = selector => () => {
+  const [element] = $$(selector);
+  return clickElement(element)();
+};
+
+const logMessage = '%s runs/s, %s functions/s';
+
+var numLoggers = 0;
+
+const makeLogger = () => {
+  let start, runs, sequence, totalFunctions;
+  numLoggers += 1;
+
+  const id = numLoggers;
+  const groupMessage = `${id}. Looping %s runs of %s functions`;
+  const timeMessage = `${id}. Duration`;
+
+  const logStart = (_runs, _sequence) => {
+    start = Date.now();
+    runs = _runs;
+    sequence = _sequence;
+    totalFunctions = runs * sequence.length;
+    console.group(groupMessage, runs, sequence.length);
+    console.time(timeMessage);
+  };
+
+  const logEnd = value => {
+    const end = Date.now();
+    // A min duration of 1 avoids Infinity runsPerSecond
+    const duration = Math.max(end - start, 1);
+    const runsPerSecond = runs / duration * 1000;
+    const functionsPerSecond = totalFunctions / duration * 1000;
+    console.log(
+      logMessage,
+      runsPerSecond.toFixed(1),
+      functionsPerSecond.toFixed(1)
+    );
+    console.timeEnd(timeMessage);
+    console.groupEnd(groupMessage);
+    return value;
+  };
+
+  return {
+    logStart,
+    logEnd
+  };
+};
+
+const looper$1 = (sequence, runs = 27) => {
+  const { logStart, logEnd } = makeLogger();
+
+  async function loop(value) {
+    let currentRun = 0;
+    logStart(loop.runs, loop.sequence);
+    while (currentRun < loop.runs) {
+      for (let step of sequence) {
+        value = await step(value);
       }
-
-      next(value);
-
-    });
+      currentRun += 1;
+    }
+    logEnd(value);
+    return value;
   }
 
   loop.sequence = sequence;
-  loop.runs = runs || defaultRuns;
+  loop.runs = runs;
 
   return loop;
-
 };
 
+/*
+Usage:
+const sequence = [function(){}, function(){}, function(){}];
+const loop = looper(sequence, 153);
+loop();
+*/
+looper$1.clickElement = clickElement;
+looper$1.clickSelector = clickSelector;
+window.looper = looper$1;
 
-looper.click = function(el){
-  return function(){
-    return new Promise(function(resolve){
-      var $el = $(el).eq(0);
-      $el.on('click.looper', function(){
-        setTimeout(resolve, 250);
-        $el.off('click.looper');
-      });
-      $el.get(0).click();
-    });
-  };
-};
+return looper$1;
 
-looper.clickSelector = function(selector){
-  return function(){
-    return new Promise(function(resolve){
-      $(selector).eq(0).click();
-      setTimeout(resolve, 100);
-    });
-  };
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (looper);
-
-
-/***/ })
-/******/ ]);
+}());
