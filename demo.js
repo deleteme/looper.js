@@ -1,4 +1,4 @@
-import looper from './index.js';
+import looper from './looper.js';
 import { $, $$ } from './src/dom/query.js';
 import { on } from './src/dom/event.js';
 

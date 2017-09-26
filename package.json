@@ -2,7 +2,7 @@
   "name": "looper.js",
   "version": "2.0.0",
   "description": "Helps find memory leaks",
-  "main": "index.js",
+  "main": "looper.js",
   "dependencies": {},
   "devDependencies": {
     "babel-preset-env": "^1.5.1",
@@ -15,7 +15,7 @@
     "test": "jest",
     "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\" \"./*.js\"",
     "serve": "serve --clipless --cache=0 --treeless",
-    "build": "rollup index.js --output.format iife --output.file dist/looper.js --name looper && $(yarn bin)/prettier --single-quote --write \"dist/looper.js\""
+    "build": "rollup looper.js --output.format iife --output.file dist/looper.js --name looper && $(yarn bin)/prettier --single-quote --write \"dist/looper.js\""
   },
   "repository": {
     "type": "git",
