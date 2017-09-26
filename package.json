@@ -14,7 +14,7 @@
   "scripts": {
     "test": "jest",
     "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\" \"./*.js\"",
-    "serve": "serve --clipless --cache=0",
+    "serve": "serve --clipless --cache=0 --treeless",
     "build": "rollup index.js --output.format iife --output.file dist/looper.js --name looper && $(yarn bin)/prettier --single-quote --write \"dist/looper.js\""
   },
   "repository": {
