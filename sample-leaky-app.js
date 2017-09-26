@@ -2,6 +2,8 @@ import looper from './index.js';
 import { $, $$ } from './src/dom/query.js';
 import { on } from './src/dom/event.js';
 
+const originalCountValue = Number($('count').value);
+
 // leaky app
 function make() {
   const element = document.createElement('div');
@@ -42,6 +44,9 @@ on($('reset-button'), 'click', () => {
   for (let element of $$('.modal')) {
     element.parentNode.removeChild(element);
   }
+  $('start-loop-button').disabled = false;
+  $('log').innerHTML = "";
+  $('count').value = originalCountValue;
 });
 
 // loop the looper!
@@ -66,4 +71,5 @@ on($('looper-loop-button'), 'click', async () => {
     ],
     3
   )();
+  $('log').innerHTML = "<span style='color:red;'>Done</span>";
 });
