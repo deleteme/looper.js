@@ -24,6 +24,7 @@ on($('reset-button'), 'click', () => {
   $('start-loop-button').disabled = false;
   $('log').innerHTML = '';
   $('count').value = originalCountValue;
+  window.modals.length = 0;
 });
 
 // loop the looper!
