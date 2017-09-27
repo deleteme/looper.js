@@ -34,8 +34,14 @@ const reset = () => {
 // example looper setup
 on($('start-loop-button'), 'click', async () => {
   reset();
-  const setup = looper.clickSelector('#show-modal-button');
-  const teardown = looper.clickSelector('#hide-modal-button');
+  const setup = async () => {
+    await looper.clickSelector('#show-modal-button')();
+    return new Promise(requestAnimationFrame);
+  };
+  const teardown = async () => {
+    await looper.clickSelector('#hide-modal-button')();
+    return new Promise(requestAnimationFrame);
+  };
   const runs = Number($('count').value);
   const loop = looper([setup, teardown], runs);
   setState({ isStarted: true, isFinished: false, loop: loop() });
