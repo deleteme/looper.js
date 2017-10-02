@@ -29,9 +29,7 @@ describe('looper', () => {
     loop = looper(cycle);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  afterEach(jest.clearAllMocks);
 
   afterAll(() => {
     console.group = originalConsoleGroup;

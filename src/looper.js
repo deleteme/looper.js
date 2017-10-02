@@ -5,7 +5,7 @@ const looper = (sequence, runs = 27) => {
 
   async function loop(value) {
     let currentRun = 0;
-    logStart(loop.runs, loop.sequence);
+    logStart(loop.runs, loop.sequence.length);
     while (currentRun < loop.runs) {
       for (let step of sequence) {
         value = await step(value);

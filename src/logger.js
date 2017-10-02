@@ -3,19 +3,18 @@ const logMessage = '%s runs/s, %s functions/s';
 var numLoggers = 0;
 
 const makeLogger = () => {
-  let start, runs, sequence, totalFunctions;
+  let start, runs, totalFunctions;
   numLoggers += 1;
 
   const id = numLoggers;
   const groupMessage = `${id}. Looping %s runs of %s functions`;
   const timeMessage = `${id}. Duration`;
 
-  const logStart = (_runs, _sequence) => {
+  const logStart = (_runs, sequenceLength) => {
     start = Date.now();
     runs = _runs;
-    sequence = _sequence;
-    totalFunctions = runs * sequence.length;
-    console.group(groupMessage, runs, sequence.length);
+    totalFunctions = runs * sequenceLength;
+    console.group(groupMessage, runs, sequenceLength);
     console.time(timeMessage);
   };
 
