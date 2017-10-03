@@ -33,7 +33,6 @@ const reset = () => {
 
 // example looper setup
 on($('start-loop-button'), 'click', async () => {
-  reset();
   const setup = async () => {
     await looper.clickSelector('#show-modal-button')();
     return new Promise(requestAnimationFrame);
@@ -54,7 +53,11 @@ on($('reset-button'), 'click', reset);
 // loop the looper!
 on($('looper-loop-button'), 'click', async () => {
   await looper(
-    [looper.clickSelector('#start-loop-button'), () => state.loop],
+    [
+      looper.clickSelector('#reset-loop-button'),
+      looper.clickSelector('#start-loop-button'),
+      () => state.loop
+    ],
     3
   )();
 });
