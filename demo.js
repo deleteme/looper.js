@@ -54,7 +54,7 @@ on($('reset-button'), 'click', reset);
 on($('looper-loop-button'), 'click', async () => {
   await looper(
     [
-      looper.clickSelector('#reset-loop-button'),
+      looper.clickSelector('#reset-button'),
       looper.clickSelector('#start-loop-button'),
       () => state.loop
     ],
