@@ -9,12 +9,12 @@
     "jest": "^21.0.2",
     "prettier": "^1.5.3",
     "rollup": "^0.51.8",
-    "serve": "^6.0.6"
+    "serve": "^11.0.0"
   },
   "scripts": {
     "test": "jest",
     "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\" \"./*.js\"",
-    "serve": "serve --clipless --cache=0 --treeless",
+    "serve": "serve",
     "build": "rollup looper.js --output.format iife --output.file dist/looper.js --name looper && $(yarn bin)/prettier --single-quote --write \"dist/looper.js\""
   },
   "repository": {
