@@ -5,11 +5,13 @@
   "main": "looper.js",
   "dependencies": {},
   "devDependencies": {
-    "babel-preset-env": "^1.5.1",
-    "jest": "^21.0.2",
-    "prettier": "^1.5.3",
-    "rollup": "^0.51.8",
-    "serve": "^11.0.0"
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "rollup": "^1.16.4",
+    "serve": "^11.0.2"
   },
   "scripts": {
     "test": "jest",
