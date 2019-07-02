@@ -22,8 +22,8 @@ const makeLogger = () => {
     const end = Date.now();
     // A min duration of 1 avoids Infinity runsPerSecond
     const duration = Math.max(end - start, 1);
-    const runsPerSecond = runs / duration * 1000;
-    const functionsPerSecond = totalFunctions / duration * 1000;
+    const runsPerSecond = (runs / duration) * 1000;
+    const functionsPerSecond = (totalFunctions / duration) * 1000;
     console.log(
       logMessage,
       runsPerSecond.toFixed(1),
