@@ -58,8 +58,8 @@ var looper = (function() {
       const end = Date.now();
       // A min duration of 1 avoids Infinity runsPerSecond
       const duration = Math.max(end - start, 1);
-      const runsPerSecond = runs / duration * 1000;
-      const functionsPerSecond = totalFunctions / duration * 1000;
+      const runsPerSecond = (runs / duration) * 1000;
+      const functionsPerSecond = (totalFunctions / duration) * 1000;
       console.log(
         logMessage,
         runsPerSecond.toFixed(1),
@@ -76,7 +76,7 @@ var looper = (function() {
     };
   };
 
-  const looper$1 = (sequence, runs = 27) => {
+  const looper = (sequence, runs = 27) => {
     const { logStart, logEnd } = makeLogger();
 
     async function loop(value) {
@@ -99,14 +99,14 @@ var looper = (function() {
   };
 
   /*
-Usage:
-const sequence = [function(){}, function(){}, function(){}];
-const loop = looper(sequence, 153);
-loop();
-*/
-  looper$1.clickElement = clickElement;
-  looper$1.clickSelector = clickSelector;
-  window.looper = looper$1;
+  Usage:
+  const sequence = [function(){}, function(){}, function(){}];
+  const loop = looper(sequence, 153);
+  loop();
+  */
+  looper.clickElement = clickElement;
+  looper.clickSelector = clickSelector;
+  window.looper = looper;
 
-  return looper$1;
+  return looper;
 })();
