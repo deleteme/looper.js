@@ -1,0 +1,31 @@
+import makeLogger from './logger.js';
+
+const looper = function looper(sequence) {
+  let runs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 27;
+  const {
+    logStart,
+    logEnd
+  } = makeLogger();
+
+  async function loop(value) {
+    let currentRun = 0;
+    logStart(loop.runs, loop.sequence.length);
+
+    while (currentRun < loop.runs) {
+      for (let step of sequence) {
+        value = await step(value);
+      }
+
+      currentRun += 1;
+    }
+
+    logEnd(value);
+    return value;
+  }
+
+  loop.sequence = sequence;
+  loop.runs = runs;
+  return loop;
+};
+
+export default looper;

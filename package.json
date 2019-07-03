@@ -2,22 +2,25 @@
   "name": "looper.js",
   "version": "2.0.0",
   "description": "Helps find memory leaks",
-  "main": "looper.js",
+  "main": "src/index.js",
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/core": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
+    "@pika/pack": "^0.4.0",
+    "@pika/plugin-build-web": "^0.4.0",
+    "@pika/plugin-bundle-web": "^0.4.0",
+    "@pika/plugin-standard-pkg": "^0.4.0",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
-    "rollup": "^1.16.4",
     "serve": "^11.0.2"
   },
   "scripts": {
     "test": "jest",
     "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\" \"./*.js\"",
     "serve": "serve",
-    "build": "rollup looper.js --output.format iife --output.file dist/looper.js --name looper && $(yarn bin)/prettier --single-quote --write \"dist/looper.js\""
+    "build": "pack build"
   },
   "repository": {
     "type": "git",
@@ -28,5 +31,26 @@
   "bugs": {
     "url": "https://github.com/deleteme/looper.js/issues"
   },
-  "homepage": "https://github.com/deleteme/looper.js#readme"
+  "homepage": "https://github.com/deleteme/looper.js#readme",
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-standard-pkg"
+      ],
+      [
+        "@pika/plugin-build-web"
+      ]
+    ]
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Edge versions",
+    "last 2 Safari versions"
+  ],
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "pkg"
+    ]
+  }
 }

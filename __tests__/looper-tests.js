@@ -1,4 +1,4 @@
-import looper from '../looper.js';
+import looper from '../src/index.js';
 
 const assertNotCalled = value => {
   throw new Error(`This should not be called. Received ${value}.`);

@@ -1,0 +1,35 @@
+{
+  "name": "looper.js",
+  "description": "Helps find memory leaks",
+  "version": "2.0.0",
+  "license": "ISC",
+  "files": [
+    "dist-*/",
+    "bin/"
+  ],
+  "pika": true,
+  "sideEffects": false,
+  "homepage": "https://github.com/deleteme/looper.js#readme",
+  "bugs": {
+    "url": "https://github.com/deleteme/looper.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deleteme/looper.js.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
+    "@pika/pack": "^0.4.0",
+    "@pika/plugin-build-web": "^0.4.0",
+    "@pika/plugin-bundle-web": "^0.4.0",
+    "@pika/plugin-standard-pkg": "^0.4.0",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "serve": "^11.0.2"
+  },
+  "esnext": "dist-src/index.js",
+  "module": "dist-web/index.js"
+}
