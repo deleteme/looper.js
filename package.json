@@ -54,5 +54,8 @@
     "modulePathIgnorePatterns": [
       "pkg"
     ]
+  },
+  "resolutions": {
+    "jest/**/sshpk": ">=1.13.2 || >=1.14.1"
   }
 }
