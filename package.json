@@ -2,7 +2,7 @@
   "name": "looper.js",
   "version": "3.0.0",
   "description": "Helps find memory leaks",
-  "main": "src/index.js",
+  "main": "pkg/dist-web/index.js",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.5.0",
