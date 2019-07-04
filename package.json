@@ -20,7 +20,8 @@
     "test": "jest",
     "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\" \"./*.js\"",
     "serve": "serve",
-    "build": "pack build"
+    "build": "pack build",
+    "publish": "pack publish"
   },
   "repository": {
     "type": "git",
