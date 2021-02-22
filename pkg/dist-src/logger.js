@@ -5,8 +5,8 @@ const makeLogger = () => {
   let start, runs, totalFunctions;
   numLoggers += 1;
   const id = numLoggers;
-  const groupMessage = "".concat(id, ". Looping %s runs of %s functions");
-  const timeMessage = "".concat(id, ". Duration");
+  const groupMessage = `${id}. Looping %s runs of %s functions`;
+  const timeMessage = `${id}. Duration`;
 
   const logStart = (_runs, sequenceLength) => {
     start = Date.now();

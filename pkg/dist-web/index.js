@@ -1,11 +1,11 @@
-const $$ = selector => document.querySelectorAll(selector);
+var $$ = selector => document.querySelectorAll(selector);
 
-const body = () => $$('body')[0];
+var body = () => $$('body')[0];
 
-const click = element => new Promise(resolve => {
-  let directHandlerTimeout;
+var click = element => new Promise(resolve => {
+  var directHandlerTimeout;
 
-  const directHandler = () => {
+  var directHandler = () => {
     element.removeEventListener('click', directHandler);
     directHandlerTimeout = setTimeout(() => {
       body().removeEventListener('click', bubblingHandler);
@@ -13,7 +13,7 @@ const click = element => new Promise(resolve => {
     }, 50);
   };
 
-  const bubblingHandler = e => {
+  var bubblingHandler = e => {
     if (e.target === element) {
       body().removeEventListener('click', bubblingHandler);
       clearTimeout(directHandlerTimeout);
@@ -26,10 +26,10 @@ const click = element => new Promise(resolve => {
   element.click();
 });
 
-const clickElement = element => () => click(element);
+var clickElement = element => () => click(element);
 
-const clickSelector = selector => () => {
-  const [element] = $$(selector);
+var clickSelector = selector => () => {
+  var [element] = $$(selector);
   return clickElement(element)();
 };
 
@@ -69,17 +69,17 @@ function _asyncToGenerator(fn) {
   };
 }
 
-const logMessage = '%s runs/s, %s functions/s';
+var logMessage = '%s runs/s, %s functions/s';
 var numLoggers = 0;
 
-const makeLogger = () => {
-  let start, runs, totalFunctions;
+var makeLogger = () => {
+  var start, runs, totalFunctions;
   numLoggers += 1;
-  const id = numLoggers;
-  const groupMessage = "".concat(id, ". Looping %s runs of %s functions");
-  const timeMessage = "".concat(id, ". Duration");
+  var id = numLoggers;
+  var groupMessage = "".concat(id, ". Looping %s runs of %s functions");
+  var timeMessage = "".concat(id, ". Duration");
 
-  const logStart = (_runs, sequenceLength) => {
+  var logStart = (_runs, sequenceLength) => {
     start = Date.now();
     runs = _runs;
     totalFunctions = runs * sequenceLength;
@@ -87,12 +87,12 @@ const makeLogger = () => {
     console.time(timeMessage);
   };
 
-  const logEnd = value => {
-    const end = Date.now(); // A min duration of 1 avoids Infinity runsPerSecond
+  var logEnd = value => {
+    var end = Date.now(); // A min duration of 1 avoids Infinity runsPerSecond
 
-    const duration = Math.max(end - start, 1);
-    const runsPerSecond = runs / duration * 1000;
-    const functionsPerSecond = totalFunctions / duration * 1000;
+    var duration = Math.max(end - start, 1);
+    var runsPerSecond = runs / duration * 1000;
+    var functionsPerSecond = totalFunctions / duration * 1000;
     console.log(logMessage, runsPerSecond.toFixed(1), functionsPerSecond.toFixed(1));
     console.timeEnd(timeMessage);
     console.groupEnd(groupMessage);
@@ -105,9 +105,9 @@ const makeLogger = () => {
   };
 };
 
-const looper = function looper(sequence) {
-  let runs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 27;
-  const {
+var looper = function looper(sequence) {
+  var runs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 27;
+  var {
     logStart,
     logEnd
   } = makeLogger();
@@ -118,11 +118,11 @@ const looper = function looper(sequence) {
 
   function _loop() {
     _loop = _asyncToGenerator(function* (value) {
-      let currentRun = 0;
+      var currentRun = 0;
       logStart(loop.runs, loop.sequence.length);
 
       while (currentRun < loop.runs) {
-        for (let step of sequence) {
+        for (var step of sequence) {
           value = yield step(value);
         }
 

@@ -1,7 +1,6 @@
 import makeLogger from './logger.js';
 
-const looper = function looper(sequence) {
-  let runs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 27;
+const looper = (sequence, runs = 27) => {
   const {
     logStart,
     logEnd
