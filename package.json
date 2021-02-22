@@ -19,8 +19,8 @@
     "test": "jest",
     "prettier": "prettier --single-quote --write \"{src,__{tests,mocks}__}/**/*.js\" \"./*.js\"",
     "serve": "serve",
-    "build": "pack build",
-    "publish": "pack publish",
+    "build": "pika build",
+    "publish": "pika publish",
     "version": "npm run build"
   },
   "repository": {
