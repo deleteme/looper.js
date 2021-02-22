@@ -1,17 +1,17 @@
 import clickElement from '../src/click-element.js';
 
-const assertNotCalled = value => {
+const assertNotCalled = (value) => {
   throw new Error(`This should not be called. Received ${value}.`);
 };
 
-const makeElementWithId = id => {
+const makeElementWithId = (id) => {
   const element = document.createElement('div');
   element.id = id;
   document.body.appendChild(element);
   return element;
 };
 
-const removeElementById = id => {
+const removeElementById = (id) => {
   const element = document.getElementById(id);
   element.parentNode.removeChild(element);
 };

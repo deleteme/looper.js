@@ -2,8 +2,8 @@ import { $$ } from './query.js';
 
 const body = () => $$('body')[0];
 
-const click = element =>
-  new Promise(resolve => {
+const click = (element) =>
+  new Promise((resolve) => {
     let directHandlerTimeout;
     const directHandler = () => {
       element.removeEventListener('click', directHandler);
@@ -12,7 +12,7 @@ const click = element =>
         resolve();
       }, 50);
     };
-    const bubblingHandler = e => {
+    const bubblingHandler = (e) => {
       if (e.target === element) {
         body().removeEventListener('click', bubblingHandler);
         clearTimeout(directHandlerTimeout);

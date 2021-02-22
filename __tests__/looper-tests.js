@@ -1,6 +1,6 @@
 import looper from '../src/index.js';
 
-const assertNotCalled = value => {
+const assertNotCalled = (value) => {
   throw new Error(`This should not be called. Received ${value}.`);
 };
 const originalConsoleGroup = console.group;
@@ -38,8 +38,8 @@ describe('looper', () => {
 
   it('accepts a value, passed to the functions.', () => {
     expect.assertions(4);
-    const addOne = jest.fn(n => n + 1);
-    const addTwo = jest.fn(n => n + 2);
+    const addOne = jest.fn((n) => n + 1);
+    const addTwo = jest.fn((n) => n + 2);
     loop = looper([addOne, addTwo]);
     loop.runs = 1;
     const assert = () => {
@@ -53,7 +53,7 @@ describe('looper', () => {
 
   it('is a Promise of the final value.', () => {
     expect.assertions(1);
-    const addOne = n => n + 1;
+    const addOne = (n) => n + 1;
     loop = looper([addOne, addOne]);
     loop.runs = 40;
     return expect(loop(0)).resolves.toBe(80);
@@ -102,19 +102,19 @@ describe('looper', () => {
     const start = Date.now();
 
     function delay(ms) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(resolve, ms);
       });
     }
 
-    const random = value => {
+    const random = (value) => {
       const ms = randomFromInterval(min, max);
       return delay(ms).then(() => value + 1);
     };
     const sequence = [random, random, random];
     loop = looper(sequence);
     loop.runs = 3;
-    return loop(0).then(value => {
+    return loop(0).then((value) => {
       const finish = Date.now();
       const difference = finish - start;
       expect(value).toBe(9); // runs * sequence.length

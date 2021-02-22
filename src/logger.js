@@ -18,7 +18,7 @@ const makeLogger = () => {
     console.time(timeMessage);
   };
 
-  const logEnd = value => {
+  const logEnd = (value) => {
     const end = Date.now();
     // A min duration of 1 avoids Infinity runsPerSecond
     const duration = Math.max(end - start, 1);
@@ -36,7 +36,7 @@ const makeLogger = () => {
 
   return {
     logStart,
-    logEnd
+    logEnd,
   };
 };
 export default makeLogger;

@@ -6,10 +6,10 @@ const originalCountValue = Number($('count').value);
 const initialState = { isReset: true, isStarted: false, isFinished: false };
 var state = initialState;
 
-const setState = newState => {
+const setState = (newState) => {
   state = {
     ...state,
-    ...newState
+    ...newState,
   };
   render();
 };
@@ -56,7 +56,7 @@ on($('looper-loop-button'), 'click', async () => {
     [
       looper.clickSelector('#reset-button'),
       looper.clickSelector('#start-loop-button'),
-      () => state.loop
+      () => state.loop,
     ],
     3
   )();
