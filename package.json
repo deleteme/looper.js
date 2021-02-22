@@ -10,8 +10,8 @@
     "@pika/plugin-build-web": "^0.4.0",
     "@pika/plugin-bundle-web": "^0.4.0",
     "@pika/plugin-standard-pkg": "^0.4.0",
-    "babel-jest": "^24.8.0",
-    "jest": "^24.8.0",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
     "prettier": "^1.18.2",
     "serve": "^11.1.0"
   },
