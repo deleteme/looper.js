@@ -1,7 +1,7 @@
 {
   "name": "looper.js",
   "description": "Helps find memory leaks",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "license": "ISC",
   "files": [
     "dist-*/",
